@@ -18,38 +18,34 @@ var roleBuilder = {
         }
 
         if(creep.memory.building) {
-            var targets = creep.room.find(FIND_CONSTRUCTION_SITES)
-            if (targets.length) {
-                var c_tar = targets.reduce(function(prev, curr) {
-                    return helpers.distance(prev.pos.x, prev.pos.y, creep.pos.x, creep.pos.y) < helpers.distance(curr.pos.x, curr.pos.y, creep.pos.x, creep.pos.y) ? prev : curr;
-                });
-                if (creep.build(c_tar) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(c_tar, {visualizePathStyle: {stroke: '#ffffff'}});
+            var close_target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+            if (close_target) {
+                if (creep.build(close_target) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(close_target, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
             else {
-                var repairs = creep.room.find(FIND_STRUCTURES, {
+                var close_repair = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return structure.hits < structure.hitsMax;
                     }
                 })
-                if (repairs.length) {
-                    var c_rep = repairs.reduce(function(prev, curr) {
-                        return helpers.distance(prev.pos.x, prev.pos.y, creep.pos.x, creep.pos.y) < helpers.distance(curr.pos.x, curr.pos.y, creep.pos.x, creep.pos.y) ? prev : curr;
-                    });
+                if (close_repair) {
                     creep.say('🚧 repairz');
-                    if (creep.repair(c_rep) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(c_rep, {visualizePathStyle: {stroke: '#ffffff'}});
+                    if (creep.repair(close_repair) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(close_repair, {visualizePathStyle: {stroke: '#ffffff'}});
                     }
                 }
             }
         }
         else {
-            var sources = creep.room.find(FIND_SOURCES).reduce(function(prev, curr) {
-                return helpers.distance(prev.pos.x, prev.pos.y, creep.pos.x, creep.pos.y) < helpers.distance(curr.pos.x, curr.pos.y, creep.pos.x, creep.pos.y) ? prev : curr;
-            });
-            if (creep.harvest(sources) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources, {visualizePathStyle: {stroke: '#ffaa00'}});
+            var close_source = creep.pos.findClosestByPath(FIND_SOURCES, {
+                filter: (source) => {
+                    return source.energy >= creep.store.getCapacity();
+                }
+            })
+            if (creep.harvest(close_source) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(close_source, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }
     }

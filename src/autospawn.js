@@ -24,9 +24,9 @@ var autoSpawn = {
         var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
         console.log('Upgrader count: ' + upgraders.length);
     
-        if(upgraders.length < 2) {
+        if(upgraders.length < 5) {
             var newName = 'Upgrader' + Game.time;
-            if (Game.spawns['Spawn1'].spawnCreep([WORK,WORK,CARRY,MOVE], newName,
+            if (Game.spawns['Spawn1'].spawnCreep([WORK,WORK,CARRY,CARRY,MOVE], newName,
                 {memory: {role: 'upgrader'}}) === 0)
                 console.log('Spawning new upgrader: ' + newName);
         }
@@ -43,7 +43,7 @@ var autoSpawn = {
         var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
         console.log('Harvester count: ' + harvesters.length);
     
-        if(harvesters.length < 2) {
+        if(harvesters.length < 3) {
             var newName = 'Harvester' + Game.time;
             if (Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE], newName,
                 {memory: {role: 'harvester'}}) === 0)
