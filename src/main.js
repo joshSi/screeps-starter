@@ -5,6 +5,7 @@ var autoSpawn = require('autospawn');
 require('constants');
 
 module.exports.loop = function () {
+    // Game.spawns['Spawn1'].spawnCreep([CLAIM,MOVE], "Clayman", {memory: {role: 'claimer'}})
     autoSpawn.run();
     for (var rm in Game.rooms) {
         var towers = Game.rooms[rm].find(
@@ -15,6 +16,8 @@ module.exports.loop = function () {
             });
             if(closestDamagedStructure) {
                 tower.repair(closestDamagedStructure);
+            } else {
+                var closestDamagedRoad = tower.pos.findClosestByRange(FIND_ROADS)
             }
             // Prioritizes hostile elimination
             var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
@@ -25,15 +28,22 @@ module.exports.loop = function () {
     }
 
     for(var name in Game.creeps) {
-        var creep = Game.creeps[name];
-        if(creep.memory.role == 'harvester') {
+        const creep = Game.creeps[name];
+        switch (creep.memory.role) {
+        case 'harvester':
             roleHarvester.run(creep);
-        }
-        if(creep.memory.role == 'upgrader') {
+            break;
+        case 'upgrader':
             roleUpgrader.run(creep);
-        }
-        if(creep.memory.role == 'builder') {
+            break;
+        case 'builder':
             roleBuilder.run(creep);
+            break;
+        case 'claimer':
+            roleClaimer.run(creep);
+            break;
+        default:
+            break;
         }
     }
 }

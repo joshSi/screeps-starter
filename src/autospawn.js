@@ -13,7 +13,7 @@ var autoSpawn = {
             var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
             console.log('Builder count: ' + builders.length);
         
-            if(builders.length < Game.spawns['Spawn1'].room.controller.level + 1) {
+            if(builders.length < Game.spawns['Spawn1'].room.controller.level + 2) {
                 var newName = 'Builder' + Game.time;
                 if (Game.spawns['Spawn1'].spawnCreep([WORK,WORK,CARRY,MOVE], newName,
                     {memory: {role: 'builder'}}) === 0)
@@ -24,7 +24,7 @@ var autoSpawn = {
         var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
         console.log('Upgrader count: ' + upgraders.length);
     
-        if(upgraders.length < 5) {
+        if(upgraders.length < 4) {
             var newName = 'Upgrader' + Game.time;
             if (Game.spawns['Spawn1'].spawnCreep([WORK,WORK,CARRY,CARRY,MOVE], newName,
                 {memory: {role: 'upgrader'}}) === 0)
@@ -43,7 +43,7 @@ var autoSpawn = {
         var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
         console.log('Harvester count: ' + harvesters.length);
     
-        if(harvesters.length < 3) {
+        if(harvesters.length < 5) {
             var newName = 'Harvester' + Game.time;
             if (Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE], newName,
                 {memory: {role: 'harvester'}}) === 0)
