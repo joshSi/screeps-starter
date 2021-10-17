@@ -12,12 +12,17 @@ module.exports.loop = function () {
             FIND_MY_STRUCTURES, {filter: {structureType: STRUCTURE_TOWER}});
         towers.forEach(tower => {
             var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => structure.hits < structure.hitsMax
+                filter: (structure) => {
+                    (
+                    structure.structureType == STRUCTURE_TOWER   ||
+                    structure.structureType == STRUCTURE_STORAGE ||
+                    structure.structureType == STRUCTURE_SPAWN   ||
+                    structure.structureType == STRUCTURE_CONTROLLER
+                    ) && structure.hits < structure.hitsMax
+                }
             });
             if(closestDamagedStructure) {
                 tower.repair(closestDamagedStructure);
-            } else {
-                var closestDamagedRoad = tower.pos.findClosestByRange(FIND_ROADS)
             }
             // Prioritizes hostile elimination
             var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
