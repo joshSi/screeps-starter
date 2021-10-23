@@ -22,9 +22,11 @@ var roleUpgrader = {
             }
         }
         else {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            var c_source = creep.room.controller.pos.findClosestByPath(FIND_SOURCES);
+            if (c_source) {
+                if(creep.harvest(c_source) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(c_source, {visualizePathStyle: {stroke: '#ffaa00'}});
+                }
             }
         }
     }

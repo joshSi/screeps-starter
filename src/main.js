@@ -1,12 +1,16 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
+var roleClaimer = require('role.claimer');
 var autoSpawn = require('autospawn');
 require('constants');
 
 module.exports.loop = function () {
     // Game.spawns['Spawn1'].spawnCreep([CLAIM,MOVE], "Clayman", {memory: {role: 'claimer'}})
-    autoSpawn.run();
+    
+        autoSpawn.run(Game.spawns['Spawn1'], 2, 4, 5);
+        autoSpawn.run(Game.spawns['Spawn2'], 0, 3, 2);
+    
     for (var rm in Game.rooms) {
         var towers = Game.rooms[rm].find(
             FIND_MY_STRUCTURES, {filter: {structureType: STRUCTURE_TOWER}});
